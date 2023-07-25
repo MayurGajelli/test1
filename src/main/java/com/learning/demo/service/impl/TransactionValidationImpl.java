@@ -12,7 +12,7 @@ public class TransactionValidationImpl implements TransactionValidation {
 
 	@Override
 	public String validatePayload(TransactionEntity entity) throws CustomException {
-		if (!Constants.BUY.equals(entity.getTransactionType()) && Constants.SELL.equals(entity.getTransactionType())) {
+		if (!Constants.BUY.equals(entity.getTransactionType()) && !Constants.SELL.equals(entity.getTransactionType())) {
 			String errorMessage = "TransactionType value can either be Buy or Sell";
 			throw new CustomException(errorMessage, null);
 		}

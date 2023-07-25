@@ -27,26 +27,40 @@ public class TransactionController {
 
 	@PostMapping(value = "/transaction")
 	public ResponseEntity<Object> createTransaction(@RequestBody TransactionEntity entity) throws CustomException {
-		Logger.info("Insert Request Started...");
-		TransactionEntity response = transactionService.insertRequest(entity);
-		Logger.info("Insert Request Completed...");
+		TransactionEntity response = null;
+		try {
+			Logger.info("Insert Request Started...");
+			response = transactionService.insertRequest(entity);
+			Logger.info("Insert Request Completed...");
+		} catch (CustomException e) {
+			return new ResponseEntity<>(e.getErrorMessage(), HttpStatus.EXPECTATION_FAILED);
+		}
 		return new ResponseEntity<>(response, HttpStatus.OK);
-
 	}
 
 	@PostMapping(value = "/transaction/update")
 	public ResponseEntity<Object> updateTransaction(@RequestBody TransactionEntity entity) throws CustomException {
-		Logger.info("Update Request Started...");
-		TransactionEntity response = transactionService.updateRequest(entity);
-		Logger.info("Update Request Completed...");
+		TransactionEntity response = null;
+		try {
+			Logger.info("Update Request Started...");
+			response = transactionService.updateRequest(entity);
+			Logger.info("Update Request Completed...");
+		} catch (CustomException e) {
+			return new ResponseEntity<>(e.getErrorMessage(), HttpStatus.EXPECTATION_FAILED);
+		}
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
 	@PostMapping(value = "/transaction/cancel")
 	public ResponseEntity<Object> cancelTransaction(@RequestBody TransactionEntity entity) throws CustomException {
-		Logger.info("Cancel Request Started...");
-		TransactionEntity response = transactionService.cancelRequest(entity);
-		Logger.info("Cancel Request Completed...");
+		TransactionEntity response = null;
+		try {
+			Logger.info("Cancel Request Started...");
+			response = transactionService.cancelRequest(entity);
+			Logger.info("Cancel Request Completed...");
+		} catch (CustomException e) {
+			return new ResponseEntity<>(e.getErrorMessage(), HttpStatus.EXPECTATION_FAILED);
+		}
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 }

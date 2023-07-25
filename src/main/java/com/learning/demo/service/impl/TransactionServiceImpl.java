@@ -51,8 +51,9 @@ public class TransactionServiceImpl implements TransactionService {
 				result = saveTransaction(entity);
 				calculatePositionForInsertRequest(entity, list);
 			} else {
-				logger.info("Duplicate Request - Insert Request already processed for tradeID: {}",
-						entity.getTradeID());
+				String errorMessage = "Duplicate Request - Insert Request already processed for tradeID: "+ entity.getTradeID();
+				logger.error(errorMessage);
+				throw new CustomException(errorMessage, null);
 			}
 		} catch (CustomException ex) {
 			throw ex;
@@ -71,11 +72,13 @@ public class TransactionServiceImpl implements TransactionService {
 			TransactionEntity updateEntity = getRequestEntityFromList(list, Constants.UPDATE);
 			TransactionEntity cancelEntity = getRequestEntityFromList(list, Constants.CANCEL);
 			if (Objects.nonNull(updateEntity)) {
-				logger.info("Duplicate Request - Update Request already processed for tradeID: {}",
-						entity.getTradeID());
+				String errorMessage = "Duplicate Request - Update Request already processed for tradeID: "+ entity.getTradeID();
+				logger.error(errorMessage);
+				throw new CustomException(errorMessage, null);
 			} else if (Objects.nonNull(cancelEntity)) {
-				logger.info("Invalid Update Request - Cancel Request already processed for tradeID: {}",
-						entity.getTradeID());
+				String errorMessage = "Invalid Update Request - Cancel Request already processed for tradeID: "+ entity.getTradeID();
+				logger.error(errorMessage);
+				throw new CustomException(errorMessage, null);
 			} else {
 				entity.setAction(Constants.UPDATE);
 				TransactionEntity tran = transactionRepo.findTopByTradeIDOrderByVersionDesc(entity.getTradeID());
@@ -105,8 +108,9 @@ public class TransactionServiceImpl implements TransactionService {
 			List<TransactionEntity> list = getTransactions(entity.getTradeID());
 			TransactionEntity cancelEntity = getRequestEntityFromList(list, Constants.CANCEL);
 			if (Objects.nonNull(cancelEntity)) {
-				logger.info("Duplicate Request - Cancel Request already processed for tradeID: {}",
-						entity.getTradeID());
+				String errorMessage = "Duplicate Request - Cancel Request already processed for tradeID: "+ entity.getTradeID();
+				logger.error(errorMessage);
+				throw new CustomException(errorMessage, null);
 			} else {
 				TransactionEntity insertEntity = getRequestEntityFromList(list, Constants.INSERT);
 				TransactionEntity updateEntity = getRequestEntityFromList(list, Constants.UPDATE);
@@ -117,8 +121,9 @@ public class TransactionServiceImpl implements TransactionService {
 					savePosition(setPositionForReverseTransaction(insertEntity));
 					result = formCancelRequest(entity);
 				} else {
-					logger.info("Invalid Cancel Request - Insert/Update Request is not processed for tradeID: "
-							+ entity.getTradeID());
+					String errorMessage = "Invalid Cancel Request - Insert/Update Request is not processed for tradeID: "+ entity.getTradeID();
+					logger.error(errorMessage);
+					throw new CustomException(errorMessage, null);
 				}
 			}
 		} catch (CustomException ex) {
