@@ -135,7 +135,7 @@ public class TransactionServiceImplTest {
 		assertThat(result).isNotNull();
 	}
 
-	@Test
+	@Test(expected = CustomException.class)
 	public void testInsertRequesDuplicateRequest() throws CustomException {
 		list.add(entity);
 		when(transactionRepo.findByTradeID(1L)).thenReturn(list);
@@ -173,7 +173,7 @@ public class TransactionServiceImplTest {
 		assertThat(result).isNotNull();
 	}
 
-	@Test
+	@Test(expected = CustomException.class)
 	public void testUpdateRequestDuplicateRequest() throws CustomException {
 		list.add(entity1);
 		when(transactionRepo.findByTradeID(1L)).thenReturn(list);
@@ -204,7 +204,7 @@ public class TransactionServiceImplTest {
 		assertThat(result).isNotNull();
 	}
 
-	@Test
+	@Test(expected = CustomException.class)
 	public void testCancelRequestDuplicateRequest() throws CustomException {
 		list.add(entity2);
 		when(transactionRepo.findByTradeID(1L)).thenReturn(list);
